@@ -261,6 +261,12 @@ class MetricsCollector {
       }
     }
 
+    // Note about expected errors
+    lines.push('');
+    lines.push('ℹ️  NOTE: Some "failed" requests are expected. Error handling tests');
+    lines.push('   intentionally trigger 4xx responses (invalid IDs, bad parameters)');
+    lines.push('   to verify the API handles edge cases correctly.');
+
     lines.push('');
     lines.push('═'.repeat(70));
     lines.push('');

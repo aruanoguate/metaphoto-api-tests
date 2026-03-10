@@ -119,6 +119,8 @@ class MetricsReporter implements Reporter {
     .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
     .badge-success { background: rgba(34, 197, 94, 0.2); color: var(--success); }
     .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    .note { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); border-radius: 8px; padding: 1rem 1.25rem; font-size: 0.875rem; line-height: 1.5; }
+    .note strong { color: var(--primary); }
     .footer { text-align: center; color: var(--text-muted); font-size: 0.875rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
   </style>
 </head>
@@ -204,6 +206,13 @@ class MetricsReporter implements Reporter {
           `).join('')}
         </tbody>
       </table>
+    </div>
+
+    <div class="section note-section">
+      <div class="note">
+        <strong>ℹ️ Note:</strong> Some "failed" requests are expected. Error handling tests intentionally trigger 4xx responses 
+        (invalid IDs, bad parameters) to verify the API handles edge cases correctly.
+      </div>
     </div>
 
     <div class="footer">

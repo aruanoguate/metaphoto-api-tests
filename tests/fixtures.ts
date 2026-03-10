@@ -60,6 +60,9 @@ export const test = base.extend<{
     getPhotoCount: (params?: Record<string, string | number>) => Promise<number>;
     getPhotoIds: (params?: Record<string, string | number>) => Promise<number[]>;
   };
+  instrumentedRequest: {
+    get: (url: string) => Promise<{ response: Awaited<ReturnType<typeof base.extend>>['request'] extends infer R ? R extends { get: (url: string) => infer T } ? Awaited<T> : never : never; duration: number }>;
+  };
 }>({
   // Provide API path from environment
   apiPath: async ({}, use) => {
@@ -142,6 +145,39 @@ export const test = base.extend<{
     };
     
     await use(api);
+  },
+  
+  // Instrumented request for stress tests - records metrics for any GET request
+  instrumentedRequest: async ({ request, apiPath }, use) => {
+    const instrumentedRequest = {
+      async get(url: string) {
+        // Determine endpoint category for metrics grouping
+        let endpoint: string;
+        if (url.includes('?')) {
+          endpoint = `GET ${apiPath}?...`;
+        } else if (url.match(/\/\d+$/)) {
+          endpoint = `GET ${apiPath}/:id`;
+        } else {
+          endpoint = `GET ${apiPath}`;
+        }
+        
+        const startTime = Date.now();
+        const response = await request.get(url);
+        const duration = Date.now() - startTime;
+        
+        metricsCollector.record({
+          endpoint,
+          method: 'GET',
+          statusCode: response.status(),
+          duration,
+          success: response.ok(),
+        });
+        
+        return { response, duration };
+      },
+    };
+    
+    await use(instrumentedRequest);
   },
 });
 
