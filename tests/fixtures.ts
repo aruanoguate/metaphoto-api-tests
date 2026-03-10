@@ -1,4 +1,5 @@
 import { test as base } from '@playwright/test';
+import { metricsCollector } from './metrics';
 
 /**
  * Shared types for API responses
@@ -66,17 +67,30 @@ export const test = base.extend<{
     await use(path);
   },
   
-  // Provide API helper methods
+  // Provide API helper methods with metrics collection
   api: async ({ request, apiPath }, use) => {
     const api = {
       async getPhoto(id: number | string) {
+        const endpoint = `GET ${apiPath}/:id`;
+        const startTime = Date.now();
         const response = await request.get(`${apiPath}/${id}`);
+        const duration = Date.now() - startTime;
+        
         let data = null;
         try {
           data = await response.json();
         } catch {
           // Non-JSON response - data remains null
         }
+        
+        metricsCollector.record({
+          endpoint,
+          method: 'GET',
+          statusCode: response.status(),
+          duration,
+          success: response.ok(),
+        });
+        
         return { status: response.status(), data };
       },
       
@@ -86,13 +100,27 @@ export const test = base.extend<{
           searchParams.set(key, String(value));
         }
         const url = searchParams.toString() ? `${apiPath}?${searchParams}` : apiPath;
+        const endpoint = searchParams.toString() ? `GET ${apiPath}?...` : `GET ${apiPath}`;
+        
+        const startTime = Date.now();
         const response = await request.get(url);
+        const duration = Date.now() - startTime;
+        
         let data = null;
         try {
           data = await response.json();
         } catch {
           // Non-JSON response - data remains null
         }
+        
+        metricsCollector.record({
+          endpoint,
+          method: 'GET',
+          statusCode: response.status(),
+          duration,
+          success: response.ok(),
+        });
+        
         return { status: response.status(), data };
       },
       

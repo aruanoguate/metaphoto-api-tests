@@ -26,7 +26,8 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html', { open: 'never' }],
-    ['json', { outputFile: 'test-results/results.json' }]
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['./metrics-reporter.ts']
   ],
   
   // Global timeout per test
