@@ -98,11 +98,11 @@ test.describe('Section 1.3: Pagination (10 points)', () => {
       const { data: page1 } = await api.getPhotos({ limit: 10, offset: 0 });
       const { data: page2 } = await api.getPhotos({ limit: 10, offset: 10 });
       
-      const ids1 = (Array.isArray(page1) ? page1 : page1.data).map((p: any) => p.id);
-      const ids2 = (Array.isArray(page2) ? page2 : page2.data).map((p: any) => p.id);
+      const ids1 = (Array.isArray(page1) ? page1 : page1.data).map((p) => p.id);
+      const ids2Set = new Set((Array.isArray(page2) ? page2 : page2.data).map((p) => p.id));
       
       // No overlap between pages
-      const overlap = ids1.filter((id: number) => ids2.includes(id));
+      const overlap = ids1.filter((id) => ids2Set.has(id));
       expect(overlap.length).toBe(0);
     });
   });

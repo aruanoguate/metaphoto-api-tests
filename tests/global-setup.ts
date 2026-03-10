@@ -27,8 +27,9 @@ async function globalSetup(config: FullConfig): Promise<void> {
           return;
         }
       }
-    } catch (e) {
-      // Continue to next path
+    } catch {
+      // Network error or timeout - continue to next path
+      continue;
     }
   }
   

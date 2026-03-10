@@ -1,4 +1,4 @@
-import { test as base, expect, APIRequestContext } from '@playwright/test';
+import { test as base } from '@playwright/test';
 
 /**
  * Shared types for API responses
@@ -54,8 +54,8 @@ export interface PhotosResponse {
 export const test = base.extend<{
   apiPath: string;
   api: {
-    getPhoto: (id: number | string) => Promise<{ status: number; data: EnrichedPhoto | any }>;
-    getPhotos: (params?: Record<string, string | number>) => Promise<{ status: number; data: PhotosResponse | EnrichedPhoto[] | any }>;
+    getPhoto: (id: number | string) => Promise<{ status: number; data: EnrichedPhoto | null }>;
+    getPhotos: (params?: Record<string, string | number>) => Promise<{ status: number; data: PhotosResponse | EnrichedPhoto[] | null }>;
     getPhotoCount: (params?: Record<string, string | number>) => Promise<number>;
     getPhotoIds: (params?: Record<string, string | number>) => Promise<number[]>;
   };
@@ -74,8 +74,8 @@ export const test = base.extend<{
         let data = null;
         try {
           data = await response.json();
-        } catch (e) {
-          // Non-JSON response
+        } catch {
+          // Non-JSON response - data remains null
         }
         return { status: response.status(), data };
       },
@@ -90,8 +90,8 @@ export const test = base.extend<{
         let data = null;
         try {
           data = await response.json();
-        } catch (e) {
-          // Non-JSON response
+        } catch {
+          // Non-JSON response - data remains null
         }
         return { status: response.status(), data };
       },
@@ -117,4 +117,4 @@ export const test = base.extend<{
   },
 });
 
-export { expect };
+export { expect } from '@playwright/test';

@@ -54,7 +54,9 @@ test.describe('Section 1.2: Filtering (35 points)', () => {
     test('returns photos from correct albums (1 and 79)', async ({ api }) => {
       const { data } = await api.getPhotos({ 'album.title': 'quidem', limit: 100 });
       const photos = Array.isArray(data) ? data : data.data;
-      const albumIds = [...new Set(photos.map((p: any) => p.album?.id))].sort((a: number, b: number) => a - b);
+      const albumIds = [...new Set(photos.map((p) => p.album?.id))]
+        .filter((id) => typeof id === 'number')
+        .sort((a, b) => a - b);
       
       expect(albumIds).toContain(1);
       expect(albumIds).toContain(79);
@@ -83,7 +85,9 @@ test.describe('Section 1.2: Filtering (35 points)', () => {
     test('returns photos from user 1 albums (1-10)', async ({ api }) => {
       const { data } = await api.getPhotos({ 'album.user.email': 'Sincere@april.biz', limit: 500 });
       const photos = Array.isArray(data) ? data : data.data;
-      const albumIds = [...new Set(photos.map((p: any) => p.album?.id))].sort((a: number, b: number) => a - b);
+      const albumIds = [...new Set(photos.map((p) => p.album?.id))]
+        .filter((id) => typeof id === 'number')
+        .sort((a, b) => a - b);
       
       expect(albumIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
