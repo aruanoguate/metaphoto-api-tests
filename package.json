@@ -1,14 +1,23 @@
 {
   "name": "metaphoto-api-tests",
-  "version": "1.0.0",
-  "description": "API test suite for MetaPhoto Technical Test evaluation",
+  "version": "2.0.0",
+  "description": "Playwright-based API test suite for evaluating MetaPhoto Technical Test submissions",
   "type": "module",
   "scripts": {
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "test:local": "BASE_URL=http://localhost:3001 npx playwright test",
+    "test:local:ui": "BASE_URL=http://localhost:3001 npx playwright test --ui",
+    "test:deployed": "echo 'Usage: BASE_URL=https://your-candidate-api.com npm test' && exit 1",
+    "test:section:1.1": "npx playwright test section-1.1",
+    "test:section:1.2": "npx playwright test section-1.2",
+    "test:section:1.3": "npx playwright test section-1.3",
+    "test:report": "npx playwright show-report",
+    "test:debug": "npx playwright test --debug"
   },
   "keywords": [
     "metaphoto",
     "api-testing",
+    "evaluation",
     "playwright"
   ],
   "author": "Alvaro Ruano",
