@@ -66,7 +66,7 @@ test.describe('Section 1.2: Filtering (35 points)', () => {
   
   test.describe('User Email Filter (equals)', () => {
     
-    test('filters by album.user.email equals "Sincere@april.biz" returns 500 photos', async ({ api }) => {
+    test('filters by album.user.email equals Sincere[at]april.biz returns 500 photos', async ({ api }) => {
       const count = await api.getPhotoCount({ 'album.user.email': 'Sincere@april.biz' });
       expect(count).toBe(500);
     });
