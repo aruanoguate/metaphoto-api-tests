@@ -1,0 +1,19 @@
+{
+  "name": "metaphoto-api-tests",
+  "version": "1.0.0",
+  "description": "API test suite for MetaPhoto Technical Test evaluation",
+  "type": "module",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "keywords": [
+    "metaphoto",
+    "api-testing",
+    "playwright"
+  ],
+  "author": "Alvaro Ruano",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}
